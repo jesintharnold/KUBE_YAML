@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    name: web-pod
+    app:  widgetario
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: web-pod
+      app:  widgetario    
+  template:
+    metadata:
+      name: web-pod
+      labels:
+        name: web-pod
+        app:  widgetario
+    spec:
+      containers:
+        - name: widgetario-web
+          image: widgetario/web:21.03
+          ports:
+            - containerPort: 80
+              name: web-port
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: widgetario-web-np
+  labels:
+    app: widgetario
+spec:
+  ports:
+    - port: 8080
+      targetPort: 80
+      nodePort: 30008
+  selector:
+    name: web-pod
+    app:  widgetario
+  type: NodePort

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-db
+  labels:
+    name: products-db
+    app:  widgetario
+spec:
+  containers:
+    - name: widgetario-product
+      image: widgetario/products-db:21.03
+      ports:
+        - containerPort: 5432
+          name: postgres
+          
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-db
+spec:
+  type: ClusterIP
+  selector:
+    name: products-db
+    app:  widgetario
+  ports:
+    - port: 5432
+      targetPort: 5432

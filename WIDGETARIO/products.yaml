@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: product-pod
+  labels:
+    name: product-pod
+    app:  widgetario
+spec:
+  containers:
+    - name: widgetario-product
+      image: widgetario/products-api:21.03
+      ports:
+        - containerPort: 80
+          name: product-port
+          
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-api
+spec:
+  type: ClusterIP
+  selector:
+    name: product-pod
+    app:  widgetario
+  ports:
+    - port: 80
+      targetPort: 80

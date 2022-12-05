@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stock-pod
+  labels:
+    name: stock-pod
+    app:  widgetario
+spec:
+  containers:
+    - name: widgetario-stock
+      image: widgetario/stock-api:21.03
+      ports:
+        - containerPort: 8080
+          name: stock-port
+          
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-api
+spec:
+  type: ClusterIP
+  selector:
+    name: stock-pod
+    app:  widgetario
+  ports:
+    - port: 8080
+      targetPort: 8080
